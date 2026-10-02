@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>فحص اللابتوب — أسد روت</title>
+<style>
+:root{--bk:#232120;--of:#D1D2CA;--gn:#056E5B;--gn2:#078872;--am:#B45309;--rd:#DC2626}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Tajawal',Tahoma,Arial,sans-serif;background:var(--of);color:var(--bk);line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{cursor:pointer;font-family:inherit}
+input,textarea{font-family:inherit}
+
+/* Layout */
+.container{max-width:56rem;margin:0 auto;padding:0 1.25rem}
+@media(min-width:768px){.container{padding:0 2rem}}
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.items-start{align-items:start}.justify-between{justify-content:space-between}.justify-center{justify-content:center}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-5{gap:1.25rem}.flex-1{flex:1}.flex-shrink-0{flex-shrink:0}.min-w-0{min-width:0}
+.grid{display:grid}.grid-2{grid-template-columns:repeat(2,1fr)}.grid-4{grid-template-columns:repeat(4,1fr)}
+@media(min-width:768px){.md-grid-4{grid-template-columns:repeat(4,1fr)}.md-flex-row{flex-direction:row}}
+.hidden{display:none!important}.invisible{visibility:hidden}
+.w-full{width:100%}.mx-auto{margin-left:auto;margin-right:auto}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-5{margin-bottom:1.25rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-5{margin-top:1.25rem}.mt-6{margin-top:1.5rem}.mt-8{margin-top:2rem}.-mt-1{margin-top:-1px}.p-3{padding:.75rem}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.pt-5{padding-top:1.25rem}.pt-6{padding-top:1.5rem}.pt-8{padding-top:2rem}.pb-16{padding-bottom:4rem}.pb-24{padding-bottom:6rem}
+
+/* Typography */
+.text-xs{font-size:.75rem}.text-sm{font-size:.875rem}.text-base{font-size:1rem}.text-lg{font-size:1.125rem}.text-xl{font-size:1.25rem}.text-2xl{font-size:1.5rem}.text-3xl{font-size:1.875rem}.text-4xl{font-size:2.25rem}
+.font-light{font-weight:300}.font-normal{font-weight:400}.font-medium{font-weight:500}.font-bold{font-weight:700}.font-black{font-weight:900}
+.leading-relaxed{line-height:1.7}.leading-tight{line-height:1.25}.text-center{text-align:center}
+.tracking-wide{letter-spacing:.02em}
+@media(min-width:768px){.md-text-lg{font-size:1.125rem}.md-text-xl{font-size:1.25rem}.md-text-2xl{font-size:1.5rem}.md-text-3xl{font-size:1.875rem}.md-text-4xl{font-size:2.25rem}}
+@media(min-width:1024px){.lg-text-4xl{font-size:2.25rem}}
+
+/* Colors */
+.c-bk{color:var(--bk)}.c-of{color:var(--of)}.c-gn{color:var(--gn)}.c-am{color:var(--am)}.c-rd{color:var(--rd)}
+.bg-bk{background:var(--bk)}.bg-of{background:var(--of)}.bg-white{background:#fff}.bg-gn{background:var(--gn)}
+.text-bk-40{color:rgba(35,33,32,.4)}.text-bk-50{color:rgba(35,33,32,.5)}.text-bk-55{color:rgba(35,33,32,.55)}.text-bk-60{color:rgba(35,33,32,.6)}.text-bk-70{color:rgba(35,33,32,.7)}.text-bk-75{color:rgba(35,33,32,.75)}
+.text-of-40{color:rgba(209,210,202,.4)}.text-of-50{color:rgba(209,210,202,.5)}.text-of-60{color:rgba(209,210,202,.6)}
+.border-bk-5{border-color:rgba(35,33,32,.05)}.border-bk-6{border-color:rgba(35,33,32,.06)}.border-bk-15{border-color:rgba(35,33,32,.15)}.border-am-15{border-color:rgba(180,83,9,.15)}
+
+/* Rounded */
+.rounded{border-radius:6px}.rounded-lg{border-radius:10px}.rounded-xl{border-radius:14px}.rounded-full{border-radius:9999px}
+
+/* Border */
+.border{border:1px solid rgba(35,33,32,.07)}.border-t{border-top:1px solid rgba(35,33,32,.06)}.border-b{border-bottom:1px solid rgba(35,33,32,.06)}
+
+/* Nav */
+.nav{background:var(--bk);border-bottom:1px solid rgba(209,210,202,.08);height:60px}
+@media(min-width:768px){.nav{height:66px}}
+.nav-inner{max-width:56rem;marginG;margin:0 auto;padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;height:100%}
+@media(min-width:768px){.nav-inner{padding:0 2rem}}
+
+/* Hero */
+.hero{background:var(--bk);color:var(--of);padding:4rem 1.25rem}
+@media(min-width:768px){.hero{padding:6rem 2rem}}
+
+/* Buttons */
+.btn-g{background:var(--gn);color:var(--of);border:none;padding:.75rem 1.5rem;border-radius:12px;font-size:.875rem;font-weight:700;transition:all .25s;cursor:pointer}
+.btn-g:hover{background:var(--gn2);transform:translateY(-1px)}
+.btn-o{background:transparent;border:1.5px solid rgba(35,33,32,.2);color:var(--bk);padding:.75rem 1.5rem;border-radius:12px;font-size:.875rem;font-weight:500;transition:all .25s;cursor:pointer}
+.btn-o:hover{border-color:rgba(35,33,32,.45);background:rgba(35,33,32,.04)}
+.btn-o-of{background:transparent;border:1.5px solid rgba(209,210,202,.25);color:var(--of);padding:.75rem 1.5rem;border-radius:12px;font-size:.875rem;font-weight:500;transition:all .25s;cursor:pointer}
+.btn-o-of:hover{border-color:rgba(209,210,202,.5);background:rgba(209,210,202,.05)}
+.btn-copy{background:rgba(5,110,91,.1);color:var(--gn);border:1px solid rgba(5,110,91,.2);padding:.375rem .75rem;border-radius:8px;font-size:.75rem;font-weight:700;transition:all .25s;cursor:pointer}
+.btn-copy:hover{background:rgba(5,110,91,.18)}
+.btn-copy.copied{background:var(--gn);color:var(--of);border-color:var(--gn)}
+.btn-sm{padding:.5rem 1.25rem;font-size:.875rem}
+.btn-wfull{width:100%}
+@media(min-width:640px){.sm-btn-wauto{width:auto}}
+
+/* Card */
+.card{background:#fff;border:1px solid rgba(35,33,32,.07);border-radius:14px;transition:border-color .25s}
+.card:hover{border-color:rgba(35,33,32,.14)}
+
+/* Code */
+.code-box{background:var(--bk);color:var(--of);border-radius:10px;font-family:'Courier New',Consolas,monospace;direction:ltr;text-align:left;white-space:pre-wrap;word-break:break-all;font-size:13px;line-height:1.7;padding:1rem;overflow-x:auto}
+
+/* Status */
+.st-normal{background:rgba(5,110,91,.1);color:var(--gn)}.st-attention{background:rgba(180,83,9,.1);color:var(--am)}.st-warning{background:rgba(220,38,38,.1);color:var(--rd)}.st-insufficient{background:rgba(35,33,32,.08);color:#6B7280}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);opacity:0;transition:all .35s cubic-bezier(.22,1,.36,1);z-index:9999;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast-inner{background:var(--bk);color:var(--of);padding:.75rem 1.25rem;border-radius:14px;font-size:.875rem;font-weight:500;display:flex;align-items:center;gap:.5rem;box-shadow:0 8px 30px rgba(0,0,0,.2)}
+
+/* Progress */
+.prog-dot{width:10px;height:10px;border-radius:50%;border:2px solid rgba(35,33,32,.2);transition:all .3s}
+.prog-dot.done{background:var(--gn);border-color:var(--gn)}
+.prog-dot.current{border-color:var(--gn);box-shadow:0 0 0 3px rgba(5,110,91,.15)}
+
+/* Tooltip */
+.tip-box{background:var(--bk);color:var(--of);border-radius:10px;font-size:.8125rem;line-height:1.7;padding:.75rem 1rem;direction:rtl;text-align:right;margin-top:.5rem}
+
+/* Forms */
+.input-field{width:100%;border:1.5px solid rgba(35,33,32,.15);border-radius:10px;padding:.625rem 1rem;font-size:.875rem;transition:border-color .25s,box-shadow .25s;background:#fff}
+.input-field:focus{outline:none;border-color:var(--gn);box-shadow:0 0 0 3px rgba(5,110,91,.1)}
+textarea.input-field{min-height:120px;resize:vertical}
+
+/* Checklist */
+.check-item{display:flex;align-items:center;gap:.75rem;padding:.5rem 0;cursor:pointer;-webkit-user-select:none;user-select:none}
+.check-item input[type=checkbox]{width:18px;height:18px;accent-color:var(--gn);cursor:pointer;flex-shrink:0}
+.check-item label{font-size:.875rem;font-weight:300;color:rgba(35,33,32,.75);cursor:pointer}
+
+/* Warning box */
+.warn-box{background:rgba(180,83,9,.08);border:1px solid rgba(180,83,9,.2);border-radius:14px;padding:1.25rem;display:flex;gap:.75rem;align-items:flex-start}
+
+/* Analysis card */
+.analysis-card{background:#fff;border:1px solid rgba(35,33,32,.07);border-radius:14px;overflow:hidden}
+.analysis-header{padding:1rem 1.25rem;border-bottom:1px solid rgba(35,33,32,.05);display:flex;align-items:center;gap:.75rem}
+.analysis-body{padding:1rem 1.25rem}
+.analysis-section{margin-bottom:1.25rem}
+.analysis-section:last-child{margin-bottom:0}
+.analysis-section h5{font-weight:700;font-size:.875rem;margin-bottom:.5rem}
+.analysis-section p{color:rgba(35,33,32,.7);font-size:.875rem;font-weight:300;line-height:1.7}
+.problem-box{background:rgba(180,83,9,.06);border:1px solid rgba(180,83,9,.15);border-radius:10px;padding:.75rem 1rem}
+.problem-box h5{color:var(--am)}
+.question-list{list-style:none;padding:0}
+.question-list li{display:flex;align-items:start;gap:.5rem;font-size:.875rem;font-weight:300;color:rgba(35,33,32,.7);padding:.25rem 0}
+.question-list li::before{content:"•";color:var(--gn);flex-shrink:0;margin-top:1px}
+
+/* Error boundary */
+.error-boundary{position:fixed;inset:0;background:var(--of);display:flex;align-items:center;justify-content:center;z-index:99999;text-align:center;padding:2rem}
+.error-boundary h2{font-size:1.5rem;font-weight:700;margin-bottom:1rem}
+.error-boundary p{font-size:1rem;font-weight:300;color:rgba(35,33,32,.6);max-width:24rem}
+
+/* Animations */
+.fiu{opacity:0;animation:fiu .7s cubic-bezier(.22,1,.36,1) forwards}
+@keyframes fiu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.28s}.d4{animation-delay:.4s}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}
+.rv.on{opacity:1;transform:translateY(0)}
+
+/* Responsive grid */
+@media(min-width:768px){.steps-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:767px){.sm-wfull{width:100%}.sm-flex-col{flex-direction:column}.sm-gap-3{gap:.75rem}}
+
+/* Screen & Physical checklist sections */
+.checklist-section{background:#fff;border:1px solid rgba(35,33,32,.07);border-radius:14px;padding:1.25rem}
+.checklist-section h3{font-weight:700;font-size:1rem;margin-bottom:1rem}
+.checklist-grid{display:grid;grid-template-columns:1fr;gap:0}
+@media(min-width:640px){.checklist-grid-2{grid-template-columns:1fr 1fr}}
+
+/* Status badge inline */
+.status-badge{display:inline-flex;align-items:center;gap:.375rem;padding:.125rem .625rem;border-radius:9999px;font-size:.6875rem;font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- Toast -->
+<div id="toast" class="toast">
+  <div class="toast-inner">
+    <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20" style="flex-shrink:0;color:var(--gn)"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+    <span id="toastMsg">تم النسخ</span>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" id="navLogo" aria-label="أسد روت">
+      <svg style="height:28px;width:auto" viewBox="0 0 1076.27 270.43" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><style>.lc1,.lc2,.lc3{fill:#D1D2CA;}.lc1{fill-rule:evenodd;}.lc3{font-size:172.36px;font-family:'AraHamahAlFidaa','Tajawal',Tahoma,sans-serif;}</style></defs>
+        <g><g>
+          <path class="lc1" d="M894,152.17V262.74a10.92,10.92,0,0,1-3.4,7.88,11.86,11.86,0,0,1-8.21,3.26H814.51a11.86,11.86,0,0,1-8.21-3.26,10.92,10.92,0,0,1-3.4-7.88V163.31a10;92,10.92,0,0,1,3.4-7.88,11.86,11.86,0,0,1,8.21-3.26Z" transform="translate(0 -30.46)"/>
+          <path class="lc1" d="M1064.66,152.17a11.86,11.86,0,0,1,8.21,3.26,10.92,10.92,0,0,1,3.4,7.88v99.45a10.86,10.86,0,0,1-3.4,7.86,11.8,11.8,0,0,1-8.19,3.26H996.79a11.86,11.86,0,0,1-8.21-3.26,10.92,10.92,0,0,1-3.4-7.88V152.17Z" transform="translate(0 -30.46)"/>
+          <path class="lc1" d="M985.08,152.17V41.58a10.89,10.89,0,0,0-3.39-7.86,11.84,11.84,0,0,0-8.2-3.26H905.6a11.87,11.87,0,0,0-8.21,3.27A10.88,10.88,0,0,0,894,41.6V152.17Z" transform="translate(0 -30.46)"/>
+          <path class="lc2" d="M144.53,127H45.72q-13.42,0-23-5.69T10,107.72q-3.17-7.86.3-16.6T24.15,76.76q11.16-6.33,29.12-4.37V88.82q-" transform="translate(0 -30.46)"/>
+          <path class="lc2" d="M745.36,127H723.19V45.39h22.17Z" transform="translate(0 -30.46)"/>
+          <text class="lc3" transform="translate(0 221.94) scale(1.29 1)">asad root</text>
+        </g></g>
+      </svg>
+    </a>
+    <span class="text-of-50 text-xs font-light">فحص اللابتوب</span>
+  </div>
+</nav>
+
+<!-- View: Home -->
+<main id="viewHome">
+  <section class="hero">
+    <div class="container text-center">
+      <div class="fiu d1 mb-4"><span style="display:inline-block;color:var(--gn);font-size:.75rem;font-weight:700;letter-spacing:.12em;margin-bottom:1rem">أداة من أسد روت</span></div>
+      <h1 class="fiu d2 text-3xl font-black leading-tight mb-5" style="color:var(--of)">افحص اللابتوب<br>قبل ما تدفع</h1>
+      <p class="fiu d3 text-of-60 text-base font-light leading-relaxed mb-8" style="max-width:28rem;margin-left:auto;margin-right:auto">شغّل الأوامر، انسخ النتائج، وخلك فاهم وش قاعد تشتري.</p>
+      <div class="fiu d4 flex items-center justify-center gap-3 sm-flex-col sm-gap-3">
+        <button onclick="startFullInspect()" class="btn-g px-8 py-4 rounded-xl text-base sm-wfull sm-btn-wauto">ابدأ الفحص</button>
+        <a href="#steps" class="btn-o-of px-8 py-4 rounded-xl text-base font-medium sm-wfull sm-btn-wauto flex items-center justify-center">كيف تعمل الأداة؟</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--of)">
+    <div class="container -mt-1">
+      <div class="warn-box">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20" style="flex-shrink:0;color:var(--am);margin-top:2px"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.126 2.492-1.126 3.257 0l5.457 8.027c.84 1.237.26 2.94-1.186 2.94H3.986c-1.447 0-2.025-1.703-1.186-2.94l5.457-8.027zM11 14a1 1 0 11-2 0 1 1 0 012 0zm-1-4a1 1 0 00-1 1v2a1 1 0 102 0v-2a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+        <div><span class="font-bold text-sm" style="color:var(--am)">مهم:</span> <span class="text-bk-75 text-sm font-light leading-relaxed">هذه الأداة تساعدك على فهم نتائج الفحص، لكنها لا تغني عن الفحص الفيزيائي للجهاز وتجربة الشاشة والكيبورد والمنافذ والبطارية.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="steps" style="background:var(--of);padding:4rem 0">
+    <div class="container">
+      <div class="grid grid-2 steps-grid gap-4" style="gap:1rem">
+        <div class="rv text-center p-5 card"><div style="width:2.5rem;height:2.5rem;border-radius:50%;background:rgba(5,110,91,.1);display:flex;align-items:center;justify-content:center;margin:0 auto .75rem"><span style="color:var(--gn);font-weight:700;font-size:.875rem">01</span></div><p class="text-sm font-bold">انسخ الأمر</p></div>
+        <div class="rv text-center p-5 card"><div style="width:2.5rem;height:2.5rem;border-radius:50%;background:rgba(5,110,91,.1);display:flex;align-items:center;justify-content:center;margin:0 auto .75rem"><span style="color:var(--gn);font-weight:700;font-size:.875rem">02</span></div><p class="text-sm font-bold">شغّل الأمر</p></div>
+        <div class="rv text-center p-5 card"><div style="width:2.5rem;height:2.5rem;border-radius:50%;background:rgba(5,110,91,.1);display:flex;align-items:center;justify-content:center;margin:0 auto .75rem"><span style="color:var(--gn);font-weight:700;font-size:.875rem">03</span></div><p class="text-sm font-bold">الصق النتيجة</p></div>
+        <div class="rv text-center p-5 card"><div style="width:2.5rem;height:2.5rem;border-radius:50%;background:rgba(5,110,91,.1);display:flex;align-items:center;justify-content:center;margin:0 auto .75rem"><span style="color:var(--gn);font-weight:700;font-size:.875rem">04</span></div><p class="text-sm font-bold">افهم النتيجة</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--of);padding-bottom:4rem">
+    <div class="container">
+      <div class="flex items-center justify-between mb-8">
+        <h2 class="text-xl font-bold">الفحوصات</h2>
+        <button onclick="startFullInspect()" style="color:var(--gn);font-size:.875rem;font-weight:700;background:none;border:none;cursor:pointer;text-decoration:underline">ابدأ الفحص الكامل ←</button>
+      </div>
+      <div id="dashboardCards" style="display:flex;flex-direction:column;gap:1rem"></div>
+    </div>
+  </section>
+</main>
+
+<!-- View: Full Inspect -->
+<div id="viewFullInspect" class="hidden">
+  <section style="background:var(--of);min-height:100vh;padding-bottom:6rem">
+    <div class="container pt-6">
+      <div class="flex items-center justify-between mb-2">
+        <button onclick="showView('home')" class="text-bk-50 text-sm font-medium" style="background:none;border:none;display:flex;align-items:center;gap:.25rem">← رجوع</button>
+        <span id="progressLabel" class="text-sm font-bold text-bk-60"></span>
+      </div>
+      <div id="progressDots" class="flex items-center justify-center gap-2 mb-8"></div>
+      <div id="fullInspectContent"></div>
+      <div class="flex items-center justify-between mt-8">
+        <button id="btnPrev" onclick="fullInspectPrev()" class="btn-o btn-sm">السابق</button>
+        <button id="btnNext" onclick="fullInspectNext()" class="btn-g btn-sm">التالي</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- View: Summary -->
+<div id="viewSummary" class="hidden">
+  <section style="background:var(--of);min-height:100vh;padding-bottom:6rem">
+    <div class="container pt-8">
+      <button onclick="showView('home')" class="text-bk-50 text-sm font-medium mb-8" style="background:none;border:none;display:flex;align-items:center;gap:.25rem">← رجوع للرئيسية</button>
+      <div id="summaryContent"></div>
+    </div>
+  </section>
+</div>
+
+<!-- Footer -->
+<footer style="background:var(--bk);border-top:1px solid rgba(209,210,202,.06);padding:3rem 0">
+  <div class="container text-center">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:1.25rem">
+      <a href="https://asadroot.com" target="_blank" rel="noopener">
+        <svg style="height:20px;width:auto;opacity:.4" viewBox="0 0 1076.27 270.43" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs><style>.fc1,.fc2,.fc3{fill:#D1D2CA;}.fc1{fill-rule:evenodd;}.fc3{font-size:172.36px;font-family:'AraHamahAlFidaa','Tajawal',Tahoma,sans-serif;}</style></defs>
+          <g><g>
+            <path class="fc1" d="M894,152.17V262.74a10.92,10.92,0,0,1-3.4,7.88,11.86,11.86,0,0,1-8.21,3.26H814.51a11.86,11.86,0,0,1-8.21-3.26,10.92,10.92,0,0,1-3.4-7.88V163.31a10.92,10.92,0,0,1,3.4-7.88,11.86,11.86,0,0,1,8.21-3.26Z" transform="translate(0 -30.46)"/>
+            <path class="fc1" d="M1064.66,152.17a11.86,11.86,0,0,1,8.21,3.26,10.92,10.92,0,0,1,3.4,7.88v99.45a10.86,10.G86,0,0,1-3.4,7.86,11.8,11.8,0,0,1-8.19,3.26H996.79a11.86,11.86,0,0,1-8.21-3.26,10.92,10.92,0,0,1-3.4-7.88V152.17Z" transform="translate(0 -30.46)"/>
+            <path class="fc1" d="M985.08,152.17V41.58a10.89,10.89,0,0,0-3.39-7.86,11.84,11.84,0,0,0-8.2-3.26H905.6a11.87,11.87,0,0,0-8.21,3.27A10.88,10.88,0,0,0,894,41.6V152.17Z" transform="translate(0 -30.46)"/>
+            <path class="fc2" d="M745.36,127H723.19V45.39h22.17Z" transform="translate(0 -30.46)"/>
+            <text class="fc3" transform="translate(0 221.94) scale(1.29 1)">asad root</text>
+          </g></g>
+        </svg>
+      </a>
+      <div class="text-of-40 text-sm font-light" style="display:flex;align-items:center;gap:.5rem">نفهم ← نبني ← ننمّي</div>
+      <p class="text-of-50 text-xs font-light" style="max-width:16rem">أداة تساعدك على فهم جهازك قبل شراء اللابتوب المستعمل.</p>
+      <p class="text-xs font-light" style="color:rgba(209,210,202,.15)">© <span id="yr"></span> أسد روت</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+
+// ═══ DATA ═══
+var inspections=[
+{id:'specs',num:'01',title:'مواصفات الجهاز',purpose:'معرفة الشركة والموديل والمعالج والرام والتخزين وكرت الشاشة',
+commands:[{type:'PowerShell',code:'Get-CimInstance Win32_ComputerSystem | Select Manufacturer,Model,TotalPhysicalMemory\nGet-CimInstance Win32_Processor | Select Name,NumberOfCores,NumberOfLogicalProcessors,MaxClockSpeed\nGet-CimInstance Win32_PhysicalMemory | Select Manufacturer,Capacity,Speed,PartNumber\nGet-CimInstance Win32_DiskDrive | Select Model,MediaType,Size\nGet-CimInstance Win32_VideoController | Select Name,AdapterRAM,DriverVersion'}],
+explanation:'هذه الأوامر تستخرج المواصفات الأساسية: الشركة المصنعة، الموديل، المعالج، الذاكرة، التخزين، وكرت الشاشة.',placeholder:'الصق نتيجة أوامر المواصفات هنا...',isBattery:false,analyzeFn:'analyzeSpecs'},
+
+{id:'screen',num:'02',title:'دقة الشاشة والتردد',purpose:'معرفة Resolution وRefresh Rate',
+commands:[{type:'PowerShell',code:'Get-CimInstance Win32_VideoController | Select Name,CurrentHorizontalResolution,CurrentVerticalResolution,CurrentRefreshRate'}],
+explanation:'هذا الأمر يعرض دقة الشاشة الحالية وعدد مرات تحديثها في الثانية.',placeholder:'الصق نتيجة أمر الشاشة هنا...',isBattery:false,analyzeFn:'analyzeScreen'},
+
+{id:'panel',num:'03',title:'معلومات الشاشة والـPanel',purpose:'استخراج معلومات تساعد على تحديد موديل الشاشة ولوحة العرض',
+commands:[{type:'PowerShell',code:'Get-CimInstance -Namespace root\\wmi -ClassName WmiMonitorBasicDisplayParams | Format-List *'},{type:'PowerShell',code:'Get-CimInstance -Namespace root\\wmi -ClassName WmiMonitorID | Format-List *'}],
+explanation:'هذين الأمرين يستخرجان معلومات الشاشة الداخلية. قد تحتوي على بيانات مشفّرة تحتاج فك ترميز.',placeholder:'الصق نتيجة أوامر معلومات الشاشة هنا...',isBattery:false,analyzeFn:'analyzePanel'},
+
+{id:'battery',num:'04',title:'فحص البطارية',purpose:'معرفة Design Capacity وFull Charge Capacity وCycle Count',
+commands:[{type:'CMD',code:'powercfg /batteryreport',note:'هذا الأمر ينشئ تقرير البطارية كملف HTML في مجلد المستخدم الحالي.\n\nافتح الملف وابحث عن:\n• DESIGN CAPACITY\n• FULL CHARGE CAPACITY\n• CYCLE COUNT\n\nثم أدخل القيم في الحقول أدناه.'}],
+explanation:'هذا الأمر ينشئ تقرير مفصّل عن البطارية. تحتاج تفتح التقرير وتدخل القيم يدويًا.',placeholder:'',isBattery:true,analyzeFn:'analyzeBattery'},
+
+{id:'gpu',num:'05',title:'كرت الشاشة',purpose:'معرفة GPU والذاكرة والتعريف',
+commands:[{type:'PowerShell',code:'Get-CimInstance Win32_VideoController | Select Name,AdapterRAM,DriverVersion,DriverDate'}],
+explanation:'هذا الأمر يعرض معلومات كرت الشاشة من Win32_VideoController فقط.',placeholder:'الصق نتيجة أمر كرت الشاشة هنا...',isBattery:false,analyzeFn:'analyzeGPU'},
+
+{id:'storage',num:'06',title:'التخزين',purpose:'معرفة نوع وحدة التخزين وموديلها وسعتها',
+commands:[{type:'PowerShell',code:'Get-CimInstance Win32_DiskDrive | Select Model,MediaType,Size\nGet-PhysicalDisk | Select FriendlyName,MediaType,Size,HealthState'}],
+explanation:'هذا الأمر يعرض نوع التخزين، الموديل، السعة، وحالة الصحّة إن توفرت.',placeholder:'الصق نتيجة أمر التخزين هنا...',isBattery:false,analyzeFn:'analyzeStorage'}
+];
+
+var tooltips={
+RAM:'ذاكرة الجهاز التي تستخدمها البرامج أثناء التشغيل. كل ما زادت، صار الجهاز يشتغل مع برامج أكثر بنفس الوقت.',
+RefreshRate:'عدد مرات تحديث الشاشة للصورة في الثانية. رقم أعلى = صورة6 أنعم خاصة في الألعاب.',
+DesignCapacity:'السعة التي صُممت البطارية لتخزينها عندما كانت جديدة.',
+FullChargeCapacity:'السعة التي تستطيع البطارية الوصول إليها حاليًا عند الشحن الكامل.',
+CycleCount:'عدد دورات الشحن والتفريغ التي مرت على البطارية تقريبًا.',
+SSD:'نوع تخزين سريع بدون أجزاء متحركة. يخلي الجهاز يشتغل ويفتح البرامج بسرعة.',
+HDD:'نوع تخزين قديم بأجزاء متحركة. أبطأ من SSD بسعة أكبر غالبًا.',
+AdapterRAM:'هذه القيمة تمثل الذاكرة التي يبلغ عنها Windows لمحول الرسوميات، لكنها وحدها لا تكفي للحكم على أداء كرت الشاشة.',
+Resolution:'عدد النقاط (بكسلات) في الشاشة. رقم أعلى = صورة أوضح وأدق.'
+};
+
+var manualScreenItems=[
+{id:'deadPixels',label:'لا توجد بكسلات ميتة'},
+{id:'backlight',label:'لا توجد بقع أو تسريب إضاءة واضح'},
+{id:'brightness',label:'السطوع متجانس'},
+{id:'flicker',label:'لا يوجد وميض واضح'},
+{id:'colors',label:'الألوان تبدو طبيعية'},
+{id:'touch',label:'اللمس يعمل (إذا كانت الشاشة Touch)'}
+];
+
+var physicalItems=[
+{id:'keyboard',label:'الكيبورد'},
+{id:'touchpad',label:'التاتش باد'},
+{id:'usb',label:'USB'},
+{id:'hdmi',label:'HDMI / DisplayPort'},
+{id:'wifi',label:'Wi-Fi'},
+{id:'bluetooth',label:'Bluetooth'},
+{id:'speakers',label:'السماعات'},
+{id:'camera',label:'الكاميرا'},
+{id:'mic',label:'الميكروفون'},
+{id:'charger',label:'الشاحن'},
+{id:'hinges',label:'المفصلات'},
+{id:'body',label:'جسم الجهاز'},
+{id:'heat',label:'حرارة الجهاز'},
+{id:'fan',label:'أصوات المروحة'}
+];
+
+// ═══ STATE ═══
+var state={currentStep:0,results:{},manualScreen:{},physical:{}};
+function loadState(){try{var s=localStorage.getItem('laptopInspectV2');if(s){var parsed=JSON.parse(s);if(parsed&&typeof parsed==='object'&&parsed.results){state=parsed}else{state={currentStep:0,results:{},manualScreen:{},physical:{}}}}}catch(e){state={currentStep:0,results:{},manualScreen:{},physical:{}}}}
+function saveState(){try{localStorage.setItem('laptopInspectV2',JSON.stringify(state))}catch(e){}}
+loadState();
+
+// ═══ TOAST ═══
+var toastTimer=null;
+function showToast(msg){var t=document.getElementById('toast');var m=document.getElementById('toastMsg');if(!t||!m)return;m.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove('show')},2500)}
+
+// ═══ COPY ═══
+function copyToClipboard(text){if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){showToast('تم نسخ الأمر للحافظة')}).catch(function(){fallbackCopy(text)})}else{fallbackCopy(text)}}
+function fallbackCopy(text){try{var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();ta.setSelectionRange(0,text.length);var ok=document.execCommand('copy');document.body.removeChild(ta);if(ok){showToast('تم نسخ الأمر للحافظة')}else{showToast('تعذر النسخ تلقائيًا — حدّد الأمر وانسخه يدويًا')}}catch(e){showToast('تعذر النسخ تلقائيًا — حدّد الأمر وانسخه يدويًا')}}
+
+function copyInspectionCommand(insId,cmdIdx){var ins=null;for(var i=0;i<inspections.length;i++){if(inspections[i].id===insId){ins=inspections[i];break}}if(!ins||!ins.commands[cmdIdx])return;copyToClipboard(ins.commands[cmdIdx].code)}
+function markCopied(btn){btn.classList.add('copied');btn.textContent='تم النسخ ✓';setTimeout(function(){btn.classList.remove('copied');btn.textContent='نسخ الأمر'},2500)}
+
+// ═══ TOOLTIP ═══
+function toggleTooltip(el,term){var existing=el.parentElement.querySelector('.tip-box');if(existing){existing.remove();return}var box=document.createElement('div');box.className='tip-box';box.textContent=tooltips[term]||'شرح غير متوفر حاليًا.';el.parentElement.appendChild(box)}
+
+// ═══ VIEWS ═══
+function showView(v){var h=document.getElementById('viewHome');var f=document.getElementById('viewFullInspect');var s=document.getElementById('viewSummary');if(h)h.classList.toggle('hidden',v!=='home');if(f)f.classList.toggle('hidden',v!=='full');if(s)s.classList.toggle('hidden',v!=='summary');window.scrollTo(0,0)}
+
+// ═══ ESCAPE ═══
+function esc(s){if(!s)return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+// ═══ FLEXIBLE PARSER ═══
+function flexParse(text,keys){
+var result={};
+if(!text||typeof text!=='string')return result;
+var lines=text.split('\n');
+for(var i=0;i<lines.length;i++){
+var line=lines[i];
+for(var k=0;k<keys.length;k++){
+var key=keys[k];
+var patterns=[
+new RegExp(key+'\\s*[:=]\\s*(.+?)\\s*$','i'),
+new RegExp(key+'\\s{2,}(.+?)\\s*$','i')
+];
+for(var p=0;p<patterns.length;p++){
+var m=line.match(patterns[p]);
+if(m&&m[1]&&m[1].trim()&&!result[key]){
+var val=m[1].trim();
+if(val&&!/^[-—]+$/.test(val)){result[key]=val}
+}}}}
+return result}
+
+function bytesToGB(b){if(!b||isNaN(b))return 0;return Math.round(parseInt(b)/1073741824)}
+
+function decodeAsciiArray(str){
+try{
+var m=str.match(/\{([\d,\s]+)\}/);
+if(!m)return null;
+var nums=m[1].split(',').map(function(n){return parseInt(n.trim())}).filter(function(n){return!isNaN(n)&&n>0&&n<65536});
+return nums.map(function(n){return String.fromCharCode(n)}).join('');
+}catch(e){return null}}
+
+// ═══ SAFE ANALYSIS DEFAULT ═══
+function safeAnalysis(){return{status:'insufficient',meaning:'تعذر تحليل النتيجة تلقائيًا. تأكد من نسخ النتيجة كاملة، أو راجع البيانات يدويًا.',problem:null,questions:[],nextStep:''}}
+
+// ═══ ANALYZERS ═══
+function analyzeSpecs(text){
+try{
+var a={status:'normal',meaning:'',problem:null,questions:[],nextStep:''};
+var all=flexParse(text,['Manufacturer','Model','TotalPhysicalMemory','Name','NumberOfCores','NumberOfLogicalProcessors','MaxClockSpeed','Capacity','Speed','MediaType','AdapterRAM','DriverVersion']);
+var ramGB=0,processor='',cores=0,manufacturer='',model='',storageType='',gpuName='',gpuVram=0;
+if(all.TotalPhysicalMemory){ramGB=bytesToGB(all.TotalPhysicalMemory)}
+if(all.NumberOfCores){cores=parseInt(all.NumberOfCores);if(isNaN(cores))cores=0}
+manufacturer=all.Manufacturer||'';
+model=all.Model||'';
+storageType=all.MediaType||'';
+if(all.AdapterRAM){gpuVram=bytesToGB(all.AdapterRAM)}
+
+var cpuLines=text.split('\n');
+for(var i=0;i<cpuLines.length;i++){
+if(/Win32_Processor|NumberOfCores/i.test(cpuLines[i])||(i>0&&/Intel|AMD/i.test(cpuLines[i])&&/Core|Ryzen|Pentium|Celeron/i.test(cpuLines[i]))){
+var nextLines=cpuLines.slice(i,i+3);
+for(var j=0;j<nextLines.length;j++){
+var nm=nextLines[j].match(/(Intel[\s\S]+?|AMD[\s\S]+?)(?:\s{2,}|\n|$)/i);
+if(nm&&nm[1]&&nm[1].length>5&&nm[1].length<80){processor=nm[1].trim();break}
+}}}
+
+var gpuLines=text.split('\n');
+for(var i=0;i<gpuLines.length;i++){
+if(/Win32_VideoController|AdapterRAM/i.test(gpuLines[i])||(i>0&&/NVIDIA|GeForce|Radeon|Arc|Iris|UHD|Graphics/i.test(gpuLines[i]))){
+var nextLines=gpuLines.slice(i,i+3);
+for(var j=0;j<nextLines.length;j++){
+var nm=nextLines[j].match(/(NVIDIA[\s\S]+?|GeForce[\s\S]+?|Radeon[\s\S]+?|Intel[\s\S]*?Graphics[\s\S]*?|Arc[\s\S]+?)(?:\s{2,}|\n|$)/i);
+if(nm&&nm[1]&&nm[1].length>4&&nm[1].length<80){gpuName=nm[1].trim();break}
+}}}
+
+var parts=[];
+if(manufacturer)parts.push('الشركة: <strong>'+esc(manufacturer)+'</strong>');
+if(model)parts.push('الموديل: <strong>'+esc(model)+'</strong>');
+if(processor)parts.push('المعالج: <strong>'+esc(processor)+'</strong>');
+if(cores)parts.push('عدد النوى: <strong>'+cores+'</strong>');
+if(ramGB)parts.push('الرام: <strong>'+ramGB+' GB</strong> <button onclick="toggleTooltip(this,\'RAM\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button>');
+if(storageType)parts.push('نوع التخزين: <strong>'+esc(storageType)+'</strong>');
+if(gpuName)parts.push('كرت الشاشة: <strong>'+esc(gpuName)+'</strong>');
+
+if(parts.length===0){a.status='insufficient';a.meaning='لم يتم التعرف على المواصفات بشكل كافٍ. تأكد من نسخ النتيجة كاملة.';a.nextStep='حاول نسخ النتيجة مرة أخرى.';return a}
+
+a.meaning='الجهاز يحتوي على:<br>'+parts.join('<br>');
+
+if(ramGB&&ramGB<8){a.status='attention';a.problem='الرام أقل من 8GB، وهذا قد يسبب بطء في الاستخدام اليومي خاصة مع عدة برامج مفتوحة.';a.questions.push('هل يمكن ترقية الرام؟','كم عدد فتحات الرام المتاحة؟')}
+
+var isHDD=false;
+if(storageType){
+var st=storageType.toLowerCase();
+if(st.includes('hdd')&&!st.includes('ssd')){isHDD=true}
+else if(st.includes('fixed hard disk')&&!model.toLowerCase().includes('ssd')){isHDD=true}
+if(isHDD){a.status=a.status==='normal'?'attention':a.status;a.problem=(a.problem?a.problem+' ':'')+'التخزين قد يكون من نوع HDD وهو أبطأ بكثير من SSD.';a.questions.push('هل يمكن استبدال التخزين بـ SSD؟')}}
+
+if(a.status==='normal')a.meaning+='<br><br>المواصفات تبدو مناسبة من ناحية هذا الفحص.';
+a.questions.push('هل الجهاز لازال تحت الضمان؟','هل سبق إصلاح أي جزء داخلي؟');
+a.nextStep='انتقل الآن إلى فحص الشاشة والدقة.';
+return a;
+}catch(e){console.error('analyzeSpecs error:',e);return safeAnalysis()}}
+
+function analyzeScreen(text){
+try{
+var a={status:'normal',meaning:'',problem:null,questions:[],nextStep:''};
+var all=flexParse(text,['CurrentHorizontalResolution','CurrentVerticalResolution','CurrentRefreshRate','Name']);
+var hRes=parseInt(all.CurrentHorizontalResolution)||0;
+var vRes=parseInt(all.CurrentVerticalResolution)||0;
+var refresh=parseInt(all.CurrentRefreshRate)||0;
+
+var parts=[];
+if(hRes&&vRes)parts.push('الدقة: <strong>'+hRes+' × '+vRes+'</strong> <button onclick="toggleTooltip(this,\'Resolution\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button>');
+if(refresh)parts.push('التردد: <strong>'+refresh+'Hz</strong> <button onclick="toggleTooltip(this,\'RefreshRate\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button>');
+
+if(parts.length===0){a.status='insufficient';a.meaning='معلومات الشاشة غير كافية. تأكد من نسخ النتيجة كاملة.';a.questions.push('هل الشاشة أصلية أم مستبدلة؟');a.nextStep='انتقل الآن إلى فحص معلومات الشاشة والـPanel.';return a}
+
+a.meaning=parts.join('<br>');
+a.meaning+='<br><br><strong>ملاحظة مهمة:</strong> الأوامر البرمجية وحدها لا تكفي لتحديد جودة الألوان مثل sRGB أو DCI-P3 أو السطوع الفعلي بشكل موثوق.';
+a.meaning+='<br><strong>لا يمكن تحديد تغطية الألوان من هذه النتيجة وحدها.</strong>';
+a.meaning+='<br>للتأكد من الألوان، نحتاج موديل الـPanel الدقيق أو اختبارًا فعليًا للشاشة.';
+
+if(refresh>0&&refresh<60){a.status='attention';a.problem='التردد أقل من 60Hz، وهذا يعني أن الشاشة قد لا تكون سلسة.';a.questions.push('هل الشاشة أصلية أم مستبدلة؟')}
+
+a.questions.push('هل تلاحظ أي بكسلات ميتة أو مناطق غامقة على الشاشة؟','هل ألوان الشاشة تبدو طبيعية بالعين؟');
+a.nextStep='انتقل الآن إلى فحص معلومات الشاشة والـPanel.';
+return a;
+}catch(e){console.error('analyzeScreen error:',e);return safeAnalysis()}}
+
+function analyzePanel(text){
+try{
+var a={status:'insufficient',meaning:'',problem:null,questions:[],nextStep:''};
+if(!text||text.trim().length<20){a.meaning='لم يتم إدخال معلومات كافية. حاول نسخ النتيجة كاملة.';a.questions.push('هل الشاشة أصلية أم مستبدلة؟');a.nextStep='انتقل الآن إلى فحص البطارية.';return a}
+
+var info=[];
+var all=flexParse(text,['ManufacturerName','ProductCodeID','SerialNumberID','Active','DisplayTransferCharacteristic']);
+
+if(all.ManufacturerName){
+var decoded=decodeAsciiArray(all.ManufacturerName);
+if(decoded&&decoded.length>0){info.push('مُصنّع الشاشة: <strong>'+esc(decoded)+'</strong>')}
+else{info.push('تم العثور على اسم المُصنّع لكنه بصيغة مشفّرة لم نتمكن من فكها بشكل موثوق.')}
+}
+if(all.ProductCodeID){
+var decoded=decodeAsciiArray(all.ProductCodeID);
+if(decoded&&decoded.length>0){info.push('رمز المنتج: <strong>'+esc(decoded)+'</strong>')}
+}
+
+a.meaning=info.length>0?'معلومات الشاشة المستخرجة:<br>'+info.join('<br>')+'<br><br>هذه المعلومات قد تساعدك في البحث عن مواصفات الشاشة الدقيقة عبر الإنترنت.':'تم العثور على بيانات تعريف للشاشة، لكن لم نتمكن من تحويلها إلى موديل واضح.';
+a.meaning+='<br><br><strong>لا يمكن تحديد تغطية الألوان والسطوع الفعلي من هذه النتيجة وحدها.</strong>';
+a.status=info.length>0?'normal':'insufficient';
+a.questions.push('هل الشاشة أصلية أم مستبدلة؟','هل تلاحظ فرق في جودة الألوان مقارنة بجهاز مشابه؟');
+a.nextStep='انتقل الآن إلى فحص البطارية.';
+return a;
+}catch(e){console.error('analyzePanel error:',e);return safeAnalysis()}}
+
+function analyzeBattery(data){
+try{
+var a={status:'normal',meaning:'',problem:null,questions:[],nextStep:''};
+var designCap=data.designCap||0;
+var fullCap=data.fullCap||0;
+var cycle=data.cycle||0;
+
+if(designCap<=0||fullCap<=0){a.status='insufficient';a.meaning='البيانات غير صالحة أو تحتاج مراجعة. لا يمكن حساب صحة البطارية بدون قيم صحيحة.';a.problem='القيم المدخلة غير صحيحة (صفر أو سالبة).';a.questions.push('تأكد من قراءة القيم من التقرير بشكل صحيح.');a.nextStep='انتقل الآن إلى فحص كرت الشاشة.';return a}
+
+if(fullCap>designCap*1.1){a.status='attention';a.problem='Full Charge Capacity أكبر من Design Capacity بشكل غير معتاد. قد يكون هناك خطأ في القراءة أو أن البطارية استُبدلت بواحدة أكبر.';a.questions.push('هل تم استبدال البطارية بواحدة أكبر سعةً؟')}
+
+var health=Math.round((fullCap/designCap)*100);
+if(health>100)health=100;
+
+a.meaning='<strong>صحة البطارية التقريبية: '+health+'%</strong><br><br>';
+a.meaning+='Design Capacity: <strong>'+designCap+' mWh</strong> <button onclick="toggleTooltip(this,\'DesignCapacity\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button><br>';
+a.meaning+='Full Charge Capacity: <strong>'+fullCap+' mWh</strong> <button onclick="toggleTooltip(this,\'FullChargeCapacity\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button><br>';
+a.meaning+='Cycle Count: <strong>'+(cycle||'غير متوفر')+'</strong> '+(cycle?'<button onclick="toggleTooltip(this,\'CycleCount\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button>':'')+'<br><br>';
+
+if(health>=80){a.meaning+='صحة البطارية فوق 80%، وهذا يعني أن البطارية لازالت تؤدي بشكل مقبول من ناحية السعة.';a.status='normal'}
+else if(health>=60){a.status='attention';a.meaning+='صحة البطارية بين 60% و 80%، وهذا يعني أن البطارية استُخدمت بشكل ملحوظ.';a.problem='البطارية فقدت جزء كبير من سعتها الأصلية. قد تحتاج شحن متكرر.';a.questions.push('هل تم تغيير البطارية من قبل؟','كم مدة الصمود الفعلية للبطارية الآن؟')}
+else{a.status='warning';a.meaning+='صحة البطارية أقل من 60%، وهذا يعني أن البطارية في حالة متدهورة.';a.problem='البطارية في حالة ضعيفة وقد لا تصمد طويلًا بدون الشاحن.';a.questions.push('هل البطارية أصلية أم مستبدلة؟','هل تبيع الجهاز مع بطارية جديدة؟')}
+
+if(cycle>500&&!a.problem){a.status=a.status==='normal'?'attention':a.status;a.problem=(a.problem?a.problem+' ':'')+'عدد دورات الشحن مرتفع ('+cycle+')، وهذا يدل على استخدام مكثف. لكن Cycle Count وحده لا يكفي للحكم النهائي.'}
+a.meaning+='<br><br><em>هذه نسبة تقريبية لحالة السعة وليست حكمًا نهائيًا على البطارية. العمر والاستخدام الفعلي يؤثران.</em>';
+a.questions.push('هل الجهاز يشتغل بدون شاحن؟','كم ساعة يصمد فعليًا؟');
+a.nextStep='انتقل الآن إلى فحص كرت الشاشة.';
+return a;
+}catch(e){console.error('analyzeBattery error:',e);return safeAnalysis()}}
+
+function analyzeGPU(text){
+try{
+var a={status:'normal',meaning:'',problem:null,questions:[],nextStep:''};
+var all=flexParse(text,['Name','AdapterRAM','DriverVersion','DriverDate']);
+var gpuName='',vram=0,driver='',driverDate='';
+
+var lines=text.split('\n');
+for(var i=0;i<lines.length;i++){
+if(/Win32_VideoController/i.test(lines[i])||(i>0&&/NVIDIA|GeForce|Radeon|Arc|Iris|UHD|Graphics/i.test(lines[i]))){
+var nextLines=lines.slice(i,i+4);
+for(var j=0;j<nextLines.length;j++){
+var nm=nextLines[j].match(/(NVIDIA[\s\S]+?|GeForce[\s\S]+?|Radeon[\s\S]+?|Intel[\s\S]*?Graphics[\s\S]*?|Arc[\s\S]+?|AMD[\s\S]+?)(?:\s{2,}|\n|$)/i);
+if(nm&&nm[1]&&nm[1].length>4&&nm[1].length<80){gpuName=nm[1].trim();break}
+}}}
+if(!gpuName&&all.Name){gpuName=all.Name}
+if(all.AdapterRAM){vram=bytesToGB(all.AdapterRAM)}
+driver=all.DriverVersion||'';
+driverDate=all.DriverDate||'';
+
+var parts=[];
+if(gpuName)parts.push('كرت الشاشة: <strong>'+esc(gpuName)+'</strong>');
+if(vram)parts.push('الذاكرة المبلّغ عنها: <strong>'+vram+' GB</strong> <button onclick="toggleTooltip(this,\'AdapterRAM\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button>');
+if(driver)parts.push('إصدار التعريف: <strong>'+esc(driver)+'</strong>');
+
+if(parts.length===0){a.status='insufficient';a.meaning='لم يتم التعرف على معلومات كرت الشاشة بشكل كافٍ.';a.questions.push('ما نوع كرت الشاشة في الجهاز؟');a.nextStep='انتقل الآن إلى فحص التخزين.';return a}
+
+a.meaning=parts.join('<br>');
+
+if(gpuName&&/Intel.*UHD|Intel.*Iris|Intel.*Graphics/i.test(gpuName)&&!/NVIDIA|AMD|Radeon|GeForce/i.test(text)){
+a.meaning+='<br><br><strong>كرت مدمج</strong> — هذا مناسب للاستخدام اليومي والبرمجة، لكن قدرته على الألعاب والتصيير تعتمد على موديل الكرت واستخدامك.';
+a.questions.push('هل تحتاج كرت شاشة منفصل لاستخدامك؟')
+}
+
+a.questions.push('هل الكرت يشتغل بدون مشاكل؟');
+a.nextStep='انتقل الآن إلى فحص التخزين.';
+return a;
+}catch(e){console.error('analyzeGPU error:',e);return safeAnalysis()}}
+
+function analyzeStorage(text){
+try{
+var a={status:'normal',meaning:'',problem:null,questions:[],nextStep:''};
+var all=flexParse(text,['Model','MediaType','Size','FriendlyName','HealthState']);
+var model='',mediaType='',sizeGB=0,health='',friendlyName='';
+
+model=all.Model||'';
+mediaType=all.MediaType||'';
+friendlyName=all.FriendlyName||'';
+if(all.Size){sizeGB=bytesToGB(all.Size)}
+health=all.HealthState||'';
+
+var isSSD=false,isHDD=false,storageKnown=false;
+if(mediaType){
+var mt=mediaType.toLowerCase();
+if(mt.includes('ssd')){isSSD=true;storageKnown=true}
+else if(mt.includes('hdd')){isHDD=true;storageKnown=true}
+else if(mt.includes('fixed hard disk')){
+if(model.toLowerCase().includes('ssd')||(friendlyName&&friendlyName.toLowerCase().includes('ssd'))){isSSD=true;storageKnown=true}
+else{storageKnown=false}
+}}
+
+var parts=[];
+if(model)parts.push('الموديل: <strong>'+esc(model)+'</strong>');
+if(mediaType){
+var typeLabel=esc(mediaType);
+if(isSSD)typeLabel+=' <button onclick="toggleTooltip(this,\'SSD\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button>';
+else if(isHDD)typeLabel+=' <button onclick="toggleTooltip(this,\'HDD\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button>';
+parts.push('النوع: <strong>'+typeLabel+'</strong>');
+if(!storageKnown)parts.push('<em>لم نتمكن من تحديد نوع التخزين بشكل مؤكد من هذه النتيجة وحدها.</em>')
+}
+if(sizeGB)parts.push('السعة: <strong>'+sizeGB+' GB</strong>');
+if(health){
+var hLower=health.toLowerCase();
+if(hLower==='healthy'||hLower==='0'){parts.push('حالة الصحّة: <strong>سليم</strong>')}
+else if(hLower!==''){parts.push('حالة الصحّة: <strong>'+esc(health)+'</strong>')}
+}
+
+if(parts.length===0){a.status='insufficient';a.meaning='لم يتم التعرف على معلومات التخزين بشكل كافٍ.';a.questions.push('ما نوع وسعة التخزين في الجهاز؟');a.nextStep='لقد أكملت جميع الفحوصات. راجع الملخص النهائي.';return a}
+
+a.meaning='معلومات التخزين:<br>'+parts.join('<br>');
+
+if(isHDD){a.status='attention';a.problem='التخزين من نوع HDD وهو أبطأ بكثير من SSD. سيلاحظ بطء في تشغيل النظام وفتح البرامج.';a.questions.push('هل يمكن استبدال التخزين بـ SSD؟','هل يوجد منفذ M.2 متاح؟')}
+if(sizeGB&&sizeGB<256){a.status=a.status==='normal'?'attention':a.status;a.problem=(a.problem?a.problem+' ':'')+'السعة صغيرة جدًا ('+sizeGB+'GB). قد تمتلئ بسرعة.';a.questions.push('هل تحتاج سعة أكبر لاستخدامك؟')}
+
+a.questions.push('هل التخزين أصلية أم مستبدلة؟');
+a.nextStep='لقد أكملت جميع الفحوصات. راجع الملخص النهائي.';
+return a;
+}catch(e){console.error('analyzeStorage error:',e);return safeAnalysis()}}
+
+function runAnalysis(insId,text){
+var ins=null;for(var i=0;i<inspections.length;i++){if(inspections[i].id===insId){ins=inspections[i];break}}
+if(!ins)return safeAnalysis();
+var fn=window[ins.analyzeFn];
+if(typeof fn==='function'){return fn(text)}
+return safeAnalysis()}
+
+// ═══ RENDER ANALYSIS ═══
+function renderAnalysis(a){
+var statusMap={normal:{label:'طبيعي',cls:'st-normal'},attention:{label:'يحتاج انتباه',cls:'st-attention'},warning:{label:'تحذير',cls:'st-warning'},insufficient:{label:'معلومات غير كافية',cls:'st-insufficient'}};
+var s=statusMap[a.status]||statusMap.insufficient;
+var h='<div class="analysis-card mt-5"><div class="analysis-header"><span class="status-badge '+s.cls+'">'+s.label+'</span><span class="text-bk-40 text-xs font-light">نتيجة التحليل</span></div><div class="analysis-body">';
+h+='<div class="analysis-section"><h5>ماذا تعني النتيجة؟</h5><p>'+a.meaning+'</p></div>';
+if(a.problem){h+='<div class="analysis-section"><div class="problem-box"><h5>هل هناك مشكلة؟</h5><p>'+a.problem+'</p></div></div>'}
+if(a.questions&&a.questions.length){h+='<div class="analysis-section"><h5>ماذا أسأل البائع؟</h5><ul class="question-list">';for(var q=0;q<a.questions.length;q++){h+='<li>'+a.questions[q]+'</li>'}h+='</ul></div>'}
+if(a.nextStep){h+='<div class="analysis-section"><h5>ماذا أفحص بعد ذلك؟</h5><p style="color:var(--gn);font-weight:500">'+a.nextStep+'</p></div>'}
+h+='</div></div>';
+return h}
+
+// ═══ RENDER INSPECT CONTENT ═══
+function renderInspectContent(ins,idx){
+var h='<h4 class="font-bold text-base mb-2">'+esc(ins.title)+'</h4>';
+h+='<p class="text-bk-55 text-sm font-light mb-4">'+esc(ins.explanation)+'</p>';
+
+if(ins.isBattery){
+var r=state.results[ins.id]||{};
+h+='<div class="mb-5">';
+for(var c=0;c<ins.commands.length;c++){
+h+='<div class="mb-4"><div class="flex items-center justify-between mb-2"><span class="text-xs font-bold text-bk-40">'+esc(ins.commands[c].type)+'</span><button onclick="copyInspectionCommand(\''+ins.id+'\','+c+');markCopied(this)" class="btn-copy">نسخ الأمر</button></div><div class="code-box">'+esc(ins.commands[c].code)+'</div>';
+if(ins.commands[c].note){h+='<p class="text-bk-60 text-sm font-light mt-3 leading-relaxed" style="background:rgba(209,210,202,.5);border-radius:10px;padding:.75rem">'+esc(ins.commands[c].note).replace(/\n/g,'<br>')+'</p>'}
+h+='</div>'}
+h+='</div>';
+
+h+='<div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.25rem">';
+h+='<div><label class="text-sm font-bold mb-1" style="display:block">Design Capacity <button onclick="toggleTooltip(this,\'DesignCapacity\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button></label><input type="number" id="batDesign'+idx+'" class="input-field" placeholder="مثال: 51000" value="'+(r.designCap||'')+'"></div>';
+h+='<div><label class="text-sm font-bold mb-1" style="display:block">Full Charge Capacity <button onclick="toggleTooltip(this,\'FullChargeCapacity\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button></label><input type="number" id="batFull'+idx+'" class="input-field" placeholder="مثال: 38000" value="'+(r.fullCap||'')+'"></div>';
+h+='<div><label class="text-sm font-bold mb-1" style="display:block">Cycle Count <button onclick="toggleTooltip(this,\'CycleCount\')" style="color:var(--gn);font-size:.75rem;font-weight:700;background:none;border:none;cursor:pointer">(وش معنى هذا؟)</button></label><input type="number" id="batCycle'+idx+'" class="input-field" placeholder="مثال: 200" value="'+(r.cycle||'')+'"></div>';
+h+='</div>';
+h+='<button onclick="analyzeBatteryFromInputs(\''+ins.id+'\','+idx+')" class="btn-g btn-wfull" style="padding:.75rem 1.5rem;border-radius:12px;font-size:.875rem">حلّل النتيجة</button>';
+}else{
+h+='<div class="mb-5">';
+for(var c=0;c<ins.commands.length;c++){
+h+='<div class="mb-4"><div class="flex items-center justify-between mb-2"><span class="text-xs font-bold text-bk-40">'+esc(ins.commands[c].type)+'</span><button onclick="copyInspectionCommand(\''+ins.id+'\','+c+');markCopied(this)" class="btn-copy">نسخ الأمر</button></div><div class="code-box">'+esc(ins.commands[c].code)+'</div></div>'}
+h+='</div>';
+h+='<div class="mb-3"><label class="text-sm font-bold mb-2" style="display:block">الصق نتيجة الأمر هنا</label><textarea id="resultInput'+idx+'" class="input-field" placeholder="'+esc(ins.placeholder)+'">'+(state.results[ins.id]?state.results[ins.id].raw||'':'')+'</textarea></div>';
+h+='<button onclick="runAnalyzeById(\''+ins.id+'\','+idx+')" class="btn-g btn-wfull" style="padding:.75rem 1.5rem;border-radius:12px;font-size:.875rem">حلّل النتيجة</button>';
+}
+
+var existing=state.results[ins.id]&&state.results[ins.id].analysis;
+if(existing){h+='<div class="mt-5">'+renderAnalysis(existing)+'</div>'}
+return h}
+
+// ═══ RUN ANALYZE BY ID ═══
+window.runAnalyzeById=function(insId,idx){
+var ins=null;for(var i=0;i<inspections.length;i++){if(inspections[i].id===insId){ins=inspections[i];break}}
+if(!ins)return;
+var el=document.getElementById('resultInput'+idx);
+if(!el)return;
+var raw=el.value.trim();
+if(!raw){showToast('الصق النتيجة أول');return}
+var analysis=runAnalysis(insId,raw);
+state.results[insId]={raw:raw,analysis:analysis};
+saveState();renderDashboard();renderFullInspectStep();showToast('تم التحليل')};
+
+window.analyzeBatteryFromInputs=function(insId,idx){
+var dEl=document.getElementById('batDesign'+idx);
+var fEl=document.getElementById('batFull'+idx);
+var cEl=document.getElementById('batCycle'+idx);
+if(!dEl||!fEl)return;
+var d=parseFloat(dEl.value)||0;
+var f=parseFloat(fEl.value)||0;
+var c=parseFloat(cEl.value)||0;
+if(d<=0||f<=0){showToast('أدخل قيم صحيحة لـ Design Capacity و Full Charge Capacity');return}
+var analysis=analyzeBattery({designCap:d,fullCap:f,cycle:c});
+var raw='Design: '+d+', Full: '+f+', Cycles: '+(c||'غير محدد');
+state.results[insId]={raw:raw,analysis:analysis,designCap:d,fullCap:f,cycle:c};
+saveState();renderDashboard();renderFullInspectStep();showToast('تم التحليل')};
+
+// ═══ DASHBOARD ═══
+function renderDashboard(){
+var c=document.getElementById('dashboardCards');if(!c)return;
+c.innerHTML='';
+for(var i=0;i<inspections.length;i++){
+var ins=inspections[i];
+var hasResult=state.results[ins.id]&&state.results[ins.id].raw;
+var analysis=state.results[ins.id]&&state.results[ins.id].analysis;
+var status=analysis?analysis.status:null;
+var statusLabel=status==='normal'?'طبيعي':status==='attention'?'يحتاج انتباه':status==='warning'?'تحذير':status==='insufficient'?'غير كافٍ':null;
+var statusCls=status==='normal'?'st-normal':status==='attention'?'st-attention':status==='warning'?'st-warning':status==='insufficient'?'st-insufficient':'';
+
+var card=document.createElement('div');
+card.className='card p-5';
+var html='<div class="flex items-start gap-4"><div style="width:2.5rem;height:2.5rem;border-radius:12px;background:rgba(5,110,91,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="color:var(--gn);font-weight:700;font-size:.75rem">'+esc(ins.num)+'</span></div><div class="flex-1 min-w-0"><div class="flex items-center gap-2 mb-1" style="flex-wrap:wrap"><h3 class="font-bold text-base">'+esc(ins.title)+'</h3>'+(statusLabel?'<span class="status-badge '+statusCls+'">'+statusLabel+'</span>':'')+'</div><p class="text-bk-55 text-sm font-light">'+esc(ins.purpose)+'</p></div></div>';
+html+='<div class="mt-4 flex items-center gap-2" style="flex-wrap:wrap"><button onclick="toggleDbCard('+i+')" class="btn-g btn-sm" id="dbShowBtn'+i+'">عرض الأمر</button>'+(hasResult?'<button onclick="toggleDbCard('+i+')" class="btn-o btn-sm">عرض النتيجة</button>':'')+'</div>';
+html+='<div id="dbExpand'+i+'" class="hidden mt-5" style="border-top:1px solid rgba(35,33,32,.06);padding-top:1.25rem">'+renderInspectContent(ins,i)+'</div>';
+card.innerHTML=html;
+c.appendChild(card);
+}}
+
+window.toggleDbCard=function(i){var el=document.getElementById('dbExpand'+i);if(!el)return;el.classList.toggle('hidden');var btn=document.getElementById('dbShowBtn'+i);if(btn)btn.textContent=el.classList.contains('hidden')?'عرض الأمر':'إخفاء الأمر'};
+
+// ═══ FULL INSPECT ═══
+window.startFullInspect=function(){state.currentStep=0;showView('full');renderFullInspectStep()};
+
+function renderFullInspectStep(){
+var step=state.currentStep;
+var pl=document.getElementById('progressLabel');
+if(pl)pl.textContent=(step+1)+' من '+inspections.length+' فحوصات';
+var dots=document.getElementById('progressDots');
+if(dots){dots.innerHTML='';for(var i=0;i<inspections.length;i++){var d=document.createElement('div');d.className='prog-dot'+(i<step?' done':'')+(i===step?' current':'');dots.appendChild(d)}}
+
+var ins=inspections[step];
+var c=document.getElementById('fullInspectContent');
+if(!c)return;
+
+var h='<div class="card p-5"><div class="flex items-center gap-3 mb-4"><span class="text-bk-40 text-xs font-bold">'+esc(ins.num)+'</span><h3 class="font-bold text-lg">'+esc(ins.title)+'</h3></div><p class="text-bk-55 text-sm font-light mb-5">'+esc(ins.purpose)+'</p>'+renderInspectContent(ins,step)+'</div>';
+
+c.innerHTML=h;
+
+var prevBtn=document.getElementById('btnPrev');
+var nextBtn=document.getElementById('btnNext');
+if(prevBtn)prevBtn.classList.toggle('invisible',step===0);
+if(nextBtn){
+if(step===inspections.length-1){nextBtn.textContent='الملخص النهائي';nextBtn.onclick=showSummary}
+else{nextBtn.textContent='الفحص التالي ←';nextBtn.onclick=fullInspectNext}
+}}
+
+window.fullInspectNext=function(){if(state.currentStep<inspections.length-1){state.currentStep++;renderFullInspectStep();window.scrollTo(0,0)}};
+window.fullInspectPrev=function(){if(state.currentStep>0){state.currentStep--;renderFullInspectStep();window.scrollTo(0,0)}};
+
+// ═══ CHECKLISTS ═══
+function renderChecklistSection(title,items,stateKey,containerId){
+var c=document.getElementById(containerId);if(!c)return;
+var h='<div class="checklist-section mb-5"><h3>'+esc(title)+'</h3><div class="checklist-grid checklist-grid-2">';
+for(var i=0;i<items.length;i++){
+var checked=state[stateKey]&&state[stateKey][items[i].id]?'checked':'';
+h+='<div class="check-item"><input type="checkbox" id="'+stateKey+'_'+items[i].id+'" '+checked+' onchange="updateCheck(\''+stateKey+'\',\''+items[i].id+'\',this.checked)"><label for="'+stateKey+'_'+items[i].id+'">'+esc(items[i].label)+'</label></div>'}
+h+='</div></div>';
+c.innerHTML=h}
+
+window.updateCheck=function(stateKey,id,val){if(!state[stateKey])state[stateKey]={};state[stateKey][id]=val;saveState()};
+
+// ═══ SUMMARY ═══
+window.showSummary=function(){
+var sc=document.getElementById('summaryContent');if(!sc)return;
+var completed=[],normal=[],attention=[],notDone=[];
+for(var i=0;i<inspections.length;i++){
+var ins=inspections[i];
+var r=state.results[ins.id];
+if(r&&r.analysis){completed.push(ins);if(r.analysis.status==='normal')normal.push(ins);else if(r.analysis.status==='attention'||r.analysis.status==='warning')attention.push(ins)}
+else{notDone.push(ins)}}
+
+var allQuestions=[];
+for(var i=0;i<completed.length;i++){var a=state.results[completed[i].id].analysis;if(a&&a.questions)for(var q=0;q<a.questions.length;q++){if(allQuestions.indexOf(a.questions[q])===-1)allQuestions.push(a.questions[q])}}
+
+var h='<h2 class="text-2xl font-bold mb-8">ملخص الفحص</h2>';
+
+h+='<div class="grid grid-2 md-grid-4 gap-3 mb-8" style="gap:.75rem">';
+h+='<div class="card p-4 text-center" style="border:1px solid rgba(35,33,32,.05)"><span class="text-2xl font-black">'+completed.length+'</span><br><span class="text-xs font-light text-bk-50">مكتمل</span></div>';
+h+='<div class="card p-4 text-center" style="border:1px solid rgba(35,33,32,.05)"><span class="text-2xl font-black" style="color:var(--gn)">'+normal.length+'</span><br><span class="text-xs font-light text-bk-50">طبيعي</span></div>';
+h+='<div class="card p-4 text-center" style="border:1px solid rgba(35,33,32,.05)"><span class="text-2xl font-black" style="color:var(--am)">'+attention.length+'</span><br><span class="text-xs font-light text-bk-50">تحتاج انتباه</span></div>';
+h+='<div class="card p-4 text-center" style="border:1px solid rgba(35,33,32,.05)"><span class="text-2xl font-black text-bk-40">'+notDone.length+'</span><br><span class="text-xs font-light text-bk-50">لم يتم</span></div>';
+h+='</div>';
+
+if(completed.length>0){
+h+='<div style="display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem">';
+for(var i=0;i<completed.length;i++){
+var a=state.results[completed[i].id].analysis;
+var statusLabel=a.status==='normal'?'طبيعي':a.status==='attention'?'انتباه':a.status==='warning'?'تحذير':'غير كافٍ';
+var statusCls=a.status==='normal'?'st-normal':a.status==='attention'?'st-attention':a.status==='warning'?'st-warning':'st-insufficient';
+h+='<div class="card p-4 flex items-center gap-3" style="border:1px solid rgba(35,33,32,.05)"><span class="status-badge '+statusCls+'">'+statusLabel+'</span><span class="font-bold text-sm">'+esc(completed[i].title)+'</span></div>'}
+h+='</div>'}
+
+// Manual screen checks
+h+='<div id="summaryScreenChecks"></div>';
+h+='<div id="summaryPhysicalChecks"></div>';
+
+if(allQuestions.length){
+h+='<div style="background:rgba(180,83,9,.06);border:1px solid rgba(180,83,9,.15);border-radius:14px;padding:1.25rem;margin-bottom:2rem"><h3 class="font-bold text-base mb-3" style="color:var(--am)">أهم النقاط التي تحتاج تتحقق منها قبل الشراء</h3><ul class="question-list">';
+for(var q=0;q<allQuestions.length;q++){h+='<li>'+allQuestions[q]+'</li>'}
+h+='</ul></div>'}
+
+if(notDone.length){
+h+='<div style="background:rgba(209,210,202,.5);border:1px solid rgba(35,33,32,.06);border-radius:14px;padding:1.25rem;margin-bottom:2rem"><h3 class="font-bold text-sm mb-2">فحوصات لم تُنفَّذ</h3><p class="text-sm font-light text-bk-60">';
+var names=[];for(var n=0;n<notDone.length;n++)names.push(notDone[n].title);
+h+=names.join('، ')+'</p></div>'}
+
+h+='<p class="text-sm font-light text-bk-60 mb-6" style="max-width:32rem"><strong>هذه نتيجة الفحوصات التي أجريتها، والقرار النهائي لك بعد فحص الجهاز فعليًا.</strong></p>';
+
+h+='<div class="flex gap-3" style="flex-wrap:wrap"><button onclick="showView(\'home\')" class="btn-o btn-sm">رجوع للرئيسية</button><button onclick="resetAll()" class="btn-o btn-sm" style="border-color:rgba(220,38,38,.3);color:var(--rd)">مسح جميع النتائج</button></div>';
+
+sc.innerHTML=h;showView('summary');window.scrollTo(0,0);
+
+// Render checklists after DOM update
+setTimeout(function(){
+renderChecklistSection('فحص الشاشة بعينك',manualScreenItems,'manualScreen','summaryScreenChecks');
+renderChecklistSection('فحوصات لا يكشفها الأمر',physicalItems,'physical','summaryPhysicalChecks');
+},50)};
+
+window.resetAll=function(){state={currentStep:0,results:{},manualScreen:{},physical:{}};saveState();renderDashboard();showView('home');showToast('تم مسح جميع النتائج')};
+
+// ═══ NAV LOGO ═══
+var navLogo=document.getElementById('navLogo');
+if(navLogo){navLogo.addEventListener('click',function(e){e.preventDefault();showView('home')})}
+
+// ═══ INIT ═══
+renderDashboard();
+
+// Year
+var yrEl=document.getElementById('yr');if(yrEl)yrEl.textContent=new Date().getFullYear();
+
+// Scroll reveal
+var obs=new IntersectionObserver(function(entries){for(var i=0;i<entries.length;i++){if(entries[i].isIntersecting){entries[i].target.classList.add('on');obs.unobserve(entries[i].target)}}},{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+var rvEls=document.querySelectorAll('.rv');for(var i=0;i<rvEls.length;i++)obs.observe(rvEls[i]);
+
+// ═══ DEV TESTS ═══
+var DEV=true;
+if(DEV){
+console.log('=== Dev Tests ===');
+var t1=analyzeBattery({designCap:51000,fullCap:40800,cycle:200});
+console.assert(t1.status==='normal','Battery 80% should be normal');
+console.assert(t1.meaning.includes('80%'),'Should show 80%');
+
+var t2=analyzeBattery({designCap:0,fullCap:40800,cycle:200});
+console.assert(t2.status==='insufficient','Zero design should be insufficient');
+
+var t3=analyzeBattery({designCap:51000,fullCap:0,cycle:200});
+console.assert(t3.status==='insufficient','Zero full should be insufficient');
+
+var t4=analyzeBattery({designCap:51000,fullCap:25000,cycle:600});
+console.assert(t4.status==='warning','Low health should be warning');
+
+var t5=analyzeSpecs('Manufacturer     Model           TotalPhysicalMemory\n------------     -----           -------------------\nHP               EliteBook 840   17179869184\n\nName                          NumberOfCores\n----                          --------------\nIntel(R) Core(TM) i7-1165G7   4');
+console.assert(t5.status==='normal'||t5.status==='attention','Specs should return valid status');
+console.assert(t5.meaning.length>0,'Specs should have meaning');
+
+var t6=analyzeScreen('CurrentHorizontalResolution CurrentVerticalResolution CurrentRefreshRate\n--------------------------- ------------------------ -----------------\n1920                        1080                     60');
+console.assert(t6.meaning.includes('1920'),'Should show resolution');
+console.assert(!t6.problem,'60Hz should not be a problem');
+
+var t7=analyzePanel('ManufacturerName : {72, 111, 80}\nProductCodeID : {67, 52, 48}');
+console.assert(t7.meaning.length>0,'Panel should have meaning');
+
+console.log('=== Dev Tests Complete ===');
+}
+
+// ═══ ERROR BOUNDARY ═══
+window.onerror=function(msg,url,line){
+console.error('Global error:',msg,url,line);
+var existing=document.querySelector('.error-boundary');
+if(!existing){
+var div=document.createElement('div');
+div.className='error-boundary';
+div.innerHTML='<div><h2>حدث خطأ غير متوقع</h2><p>جرّب إعادة العملية أو تحديث الصفحة.</p><button onclick="this.parentElement.parentElement.remove();location.reload()" style="margin-top:1rem;background:var(--gn);color:var(--of);border:none;padding:.75rem 1.5rem;border-radius:12px;font-weight:700;cursor:pointer">تحديث الصفحة</button></div>';
+document.body.appendChild(div);
+}return true};
+
+// Expose functions to global scope for onclick handlers
+window.copyInspectionCommand=copyInspectionCommand;
+window.markCopied=markCopied;
+window.toggleTooltip=toggleTooltip;
+window.analyzeBatteryFromInputs=analyzeBatteryFromInputs;
+
+}); // end DOMContentLoaded
+</script>
+</body>
+</html>
